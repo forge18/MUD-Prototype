@@ -1,0 +1,2 @@
+const compromise = require('compromise')
+
