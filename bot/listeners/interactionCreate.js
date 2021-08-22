@@ -2,13 +2,7 @@ const prefix = process.env.PREFIX;
 const type = 'interaction';
 
 exports.run = async function (client, interaction) {
-	if( 
-		!client.commands.has(interaction.commandName) ||
-		!interaction.isCommand() 
-	) return;
-	console.log(interaction.isButton());
-	console.log(interaction.isMessageComponent());
-	console.log(interaction.isSelectMenu());
+
 	switch(true)
 	{
 		case interaction.isButton():
@@ -21,6 +15,7 @@ exports.run = async function (client, interaction) {
 			selectCommand(client, interaction);
 			break;
 		default:
+            if( !client.commands.has(interaction.commandName) || !interaction.isCommand() ) return;
 			messageCommand(client, interaction);
 			break;
 	}
@@ -28,12 +23,8 @@ exports.run = async function (client, interaction) {
 
 async function buttonCommand(client, interaction)
 {
-
-}
-
-async function contextCommand(client, interacction)
-{
-
+    const buttonCommand = interaction.message.interaction.commandName;
+    await client.commands.get(buttonCommand).execute(client, type, interaction);
 }
 
 async function componentCommand(client, interaction)

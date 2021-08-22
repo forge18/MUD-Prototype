@@ -1,4 +1,4 @@
-const User = require('../data/schemas/Admin/UserSchema')
+const { User } = require('../data/schemas/Admin/UserSchema')
 
 module.exports = async function() 
 {

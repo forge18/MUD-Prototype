@@ -22,6 +22,7 @@ module.exports = function(client)
         );
     }
 
+    // Get group folders
     const commands = [];
     const commandGroups = fs.readdirSync(
         path.join(__dirname, '../commands'), 
@@ -29,22 +30,25 @@ module.exports = function(client)
     );
 
     for (const group of commandGroups) {
-            const commandSubGroups = fs.readdirSync(
-                path.join(__dirname, `../commands/${group.name}`), 
-                {withFileTypes: true}
-            )
-            .filter(
-                subgroup=>!subgroup.isFile()
-            );
+        // Get subgroup folders
+        const commandSubGroups = fs.readdirSync(
+            path.join(__dirname, `../commands/${group.name}`), 
+            {withFileTypes: true}
+        )
+        .filter(
+            subgroup=>!subgroup.isFile(),
+            subgroup=>!subgroup.name === 'buttonActions.js'
+        );
         const commandGroupFiles = fs.readdirSync(
-                path.join(__dirname, `../commands/${group.name}`), 
-                {withFileTypes: true}
-            )
-            .filter(
-                subgroup=>subgroup.isFile(), 
-                file => file.endsWith('.js')
-            );
-            
+            path.join(__dirname, `../commands/${group.name}`), 
+            {withFileTypes: true}
+        )
+        .filter(
+            subgroup=>subgroup.isFile(), 
+            file => file.endsWith('.js')
+        ); 
+        
+        // Get loose command files in group folders
         for (const groupFile of commandGroupFiles) {
             let command = require(
                 path.join(__dirname, `../commands/${group.name}/${groupFile.name}`)
@@ -58,6 +62,7 @@ module.exports = function(client)
             }
         }
 
+        // Get command files in subgroup folders
         for (const subgroup of commandSubGroups) {
             const commandFiles = fs.readdirSync(
                 path.join(__dirname, `../commands/${group.name}/${subgroup.name}`), 
