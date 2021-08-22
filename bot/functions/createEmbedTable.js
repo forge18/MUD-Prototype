@@ -7,6 +7,7 @@ module.exports = function(title, columns, color = null)
             .setTitle(title)
 
     columns.forEach((column, index) => {
+        console.log(column);
         embed.addField(column['name'], column['data'].join('\n'), true);
     });  
     

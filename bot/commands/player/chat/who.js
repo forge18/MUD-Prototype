@@ -13,36 +13,42 @@ module.exports = {
 	async execute(client, type, interaction) {
         const users = await getOnlineUsers();
 
-        let userList = [];
-        let rankList = [];
-        let onlineList = [];
+        if( users.length > 0)
+        {
+            let userList = [];
+            let rankList = [];
+            let onlineList = [];
 
-        users.forEach((user, index) => {
-            userList.push(user.username) 
-            rankList.push(user.rank);
-            onlineList.push('*' + dayjs(user.updatedAt).fromNow() + '*');
-        });
+            users.forEach((user, index) => {
+                userList.push(user.username) 
+                rankList.push(user.rank);
+                onlineList.push('*' + dayjs(user.updatedAt).fromNow() + '*');
+            });
 
-        const embed = createEmbedTable(
-            'Currently Online', 
-            [
-                {
-                    'name': 'User',
-                    'data': userList,
-                },
-                {
-                    'name': 'Rank',
-                    'data': rankList,
-                },
-                {
-                    'name': 'Logged In',
-                    'data': onlineList,
-                },
-            ], 
-            'LIGHT_GREY'
-        );
+            const embed = createEmbedTable(
+                'Currently Online', 
+                [
+                    {
+                        'name': 'User',
+                        'data': userList,
+                    },
+                    {
+                        'name': 'Rank',
+                        'data': rankList,
+                    },
+                    {
+                        'name': 'Logged In',
+                        'data': onlineList,
+                    },
+                ], 
+                'LIGHT_GREY'
+            );
 
-        await interaction.reply({ content: '** **', ephemeral: true, embeds: [embed]});
-
+            await interaction.reply({ content: '** **', ephemeral: true, embeds: [embed]});
+        }
+        else
+        {
+            await interaction.reply('No users are currently online.');
+        }
 	},
 };
